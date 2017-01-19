@@ -2,12 +2,22 @@
 
 Trying out [etcd v3](https://coreos.com/etcd/docs/latest/) API from Scala
 
+## Development environment
+
+- macOS with HomeBrew
+- `docker-machine`
+
+Should also work with Docker native, but not tested.
+
+
 ## Getting started
+
+```
+$ docker-machine start default
+$ eval $(docker-machine env)
+```
 
 ```
 $ sbt test
 ```
 
-## TODO
-
-- Something's wrong with docker-it-scala 0.9.0-RC3 setup; how to get `dockerFactory` introduced?

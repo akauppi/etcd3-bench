@@ -27,12 +27,17 @@ val akkaHttpTestkit = "com.typesafe.akka" %% "akka-http-testkit" % akkaHttpVersi
 
 val scalaTest = "org.scalatest" %% "scalatest" % "3.0.1" % Test
 
-val dockerItScala = "com.whisk" %% "docker-testkit-scalatest" % "0.9.0-RC3" % Test    // 0.9.x needed for Scala 2.12
+val dockerItScala = {
+  val ver = "0.9.0-RC3"   // 0.9.x needed for Scala 2.12
+  Seq(
+    "com.whisk" %% "docker-testkit-scalatest" % ver % Test,
+    "com.whisk" %% "docker-testkit-impl-docker-java" % ver % Test
+  )
+}
 
 libraryDependencies ++= Seq(
   akkaHttp,
   //
   akkaHttpTestkit,
-  scalaTest,
-  dockerItScala
-)
+  scalaTest
+) ++ dockerItScala

@@ -1,5 +1,6 @@
 package test
 
+import com.whisk.docker.DockerFactory
 import com.whisk.docker.impl.dockerjava.DockerKitDockerJava
 import com.whisk.docker.scalatest.DockerTestKit
 import org.scalatest.concurrent.ScalaFutures
@@ -11,10 +12,7 @@ import scala.concurrent.duration._
 import scala.languageFeature.postfixOps
 
 class SomeTest extends FlatSpec with Matchers with ScalaFutures with DockerEtcdV3 with DockerTestKit with DockerKitDockerJava {
-  import SomeTest._
-
-  //override
-  //def dockerFactory: DockerFactory = ???
+  //import SomeTest._
 
   behavior of "SomeTest"
 
@@ -34,8 +32,10 @@ class SomeTest extends FlatSpec with Matchers with ScalaFutures with DockerEtcdV
   }
 }
 
+/*** disabled
 object SomeTest {
   implicit def dur2span(dur: FiniteDuration): Span = {
     Span(dur.toMillis, Milliseconds)
   }
 }
+***/
