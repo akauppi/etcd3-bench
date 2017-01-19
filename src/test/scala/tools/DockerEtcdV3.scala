@@ -3,14 +3,17 @@ package test.tools
 import com.whisk.docker.{DockerContainer, DockerKit, DockerReadyChecker}
 
 trait DockerEtcdV3 extends DockerKit {
+  import DockerEtcdV3._
 
-  val DefaultMongodbPort = 27017
-
-  val mongodbContainer = DockerContainer("mongo:3.0.6")
-    .withPorts(DefaultMongodbPort -> None)
-    .withReadyChecker(DockerReadyChecker.LogLineContains("waiting for connections on port"))
-    .withCommand("mongod", "--nojournal", "--smallfiles", "--syncdelay", "0")
+  val etcdV3Container = DockerContainer("quay.io/coreos/etcd:v3.0.16")
+    .withPorts(port -> None)
+    .withReadyChecker(DockerReadyChecker.LogLineContains("etcdmain: ready to serve client requests"))
 
   abstract override def dockerContainers: List[DockerContainer] =
-    mongodbContainer :: super.dockerContainers
+    etcdV3Container :: super.dockerContainers
+}
+
+object DockerEtcdV3 {
+  private
+  val port: Int = 2739
 }

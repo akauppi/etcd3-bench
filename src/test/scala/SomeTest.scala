@@ -26,8 +26,8 @@ class SomeTest extends FlatSpec with Matchers with ScalaFutures with DockerEtcdV
     dockerContainers.map(_.image).foreach(println)
     dockerContainers.forall(_.isReady().futureValue) shouldBe true
 
-    whenReady(mongodbContainer.getPorts()) { ports =>
-      info( s"Mongodb using ports: $ports" )
+    whenReady(etcdV3Container.getPorts()) { ports =>
+      info( s"etcdV3 using ports: $ports" )
     }
   }
 }

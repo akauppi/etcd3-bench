@@ -2,22 +2,29 @@
 
 Trying out [etcd v3](https://coreos.com/etcd/docs/latest/) API from Scala
 
-## Development environment
+## Requirements
 
-- macOS with HomeBrew
-- `docker-machine`
+- `docker-machine` or Docker native
+- `sbt`
 
-Should also work with Docker native, but not tested.
+The development environment is macOS with HomeBrew but that shouldn't matter.
 
-
-## Getting started
+Launch Docker (for `docker-machine`):
 
 ```
 $ docker-machine start default
 $ eval $(docker-machine env)
 ```
 
+Launch Docker (for Docker native):
+
+```
+$ docker info     # tbd. is this correct?
+```
+
+
+## Getting started
+
 ```
 $ sbt test
 ```
-
