@@ -12,6 +12,10 @@ The development environment is macOS with HomeBrew but that shouldn't matter.
 Launch Docker (for `docker-machine`):
 
 ```
+$ docker-machine upgrade
+```
+
+```
 $ docker-machine start default
 $ eval $(docker-machine env)
 ```
@@ -21,7 +25,6 @@ Launch Docker (for Docker native):
 ```
 $ docker info     # tbd. is this correct?
 ```
-
 
 ## Getting started
 

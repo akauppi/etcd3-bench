@@ -25,7 +25,7 @@ That's it.
 The instructions are for macOS with `docker-machine`.
 
 ```
-$ docker run -p 2379:2379 --name etcd quay.io/coreos/etcd:v3.0.16 /usr/local/bin/etcd -advertise-client-urls http://0.0.0.0:2379 -listen-client-urls http://0.0.0.0:2379
+$ docker run -p 2379:2379 --name etcd quay.io/coreos/etcd:v3.1.0 /usr/local/bin/etcd -advertise-client-urls http://0.0.0.0:2379 -listen-client-urls http://0.0.0.0:2379
 ...
 2017-01-19 21:46:10.181142 I | etcdmain: ready to serve client requests
 2017-01-19 21:46:10.181441 N | etcdmain: serving insecure client requests on localhost:2379, this is strongly discouraged!

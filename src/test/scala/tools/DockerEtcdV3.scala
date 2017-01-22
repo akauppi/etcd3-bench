@@ -7,9 +7,12 @@ trait DockerEtcdV3 extends DockerKit {
 
   val portBinding = ports.map( x => Tuple2(x,None) )
 
-  val etcdV3Container = DockerContainer("quay.io/coreos/etcd:v3.0.16")
+  // Note: 3.0.16 clear text is prefixed: "etcdmain: ready to serve client requests"
+  //      3.1.0 has it "embed: ..."
+
+  val etcdV3Container = DockerContainer("quay.io/coreos/etcd:v3.1.0")
     .withPorts(portBinding:_*)
-    .withReadyChecker(DockerReadyChecker.LogLineContains("etcdmain: ready to serve client requests"))
+    .withReadyChecker(DockerReadyChecker.LogLineContains("embed: ready to serve client requests"))
 
   abstract override def dockerContainers: List[DockerContainer] =
     etcdV3Container :: super.dockerContainers
