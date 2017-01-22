@@ -28,6 +28,21 @@ $ docker info     # tbd. is this correct?
 
 ## Getting started
 
+<!-- tbd. Remove this once `coreos/jetcd` is properly published.
+
+Follow this [issue](https://github.com/coreos/jetcd/issues/66) to see the publishing situation.
+-->
+
+Until [coreos/jetcd](https://github.com/coreos/jetcd) is properly published, we need to build and install a local copy of it:
+
+```
+$ git clone https://github.com/coreos/jetcd.git
+$ cd jetcd
+$ mvn install -DskipTests
+```
+
+That installs `coreos/jetcd` in a local Maven 
+
 ```
 $ sbt test
 ```
