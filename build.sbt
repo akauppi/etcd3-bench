@@ -37,11 +37,6 @@ val dockerItScala = {
 
 // This isn't publicly released (no release marked in GitHub, not found in Maven Central)
 //
-// - clone 'https://github.com/coreos/jetcd.git'
-// - $ mvn install -DskipTests
-//
-// ..installs it to: ~/.m2/repository/com/coreos/jetcd/0.1.0-SNAPSHOT/jetcd-0.1.0-SNAPSHOT.jar
-//
 // Follow -> https://github.com/coreos/jetcd/issues/66
 //
 val jetcd = "com.coreos" % "jetcd" % "0.1.0-SNAPSHOT"

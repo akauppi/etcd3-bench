@@ -9,24 +9,7 @@ Trying out [etcd v3](https://coreos.com/etcd/docs/latest/) API from Scala
 
 The development environment is macOS with HomeBrew but that shouldn't matter.
 
-Launch Docker (for `docker-machine`):
-
-```
-$ docker-machine upgrade
-```
-
-```
-$ docker-machine start default
-$ eval $(docker-machine env)
-```
-
-Launch Docker (for Docker native):
-
-```
-$ docker info     # tbd. is this correct?
-```
-
-## Getting started
+---
 
 <!-- tbd. Remove this once `coreos/jetcd` is properly published.
 
@@ -41,8 +24,51 @@ $ cd jetcd
 $ mvn install -DskipTests
 ```
 
-That installs `coreos/jetcd` in a local Maven 
+That installs `coreos/jetcd` in a local Maven.
+
+---
+
+## Getting started
+
+Launch Docker (for `docker-machine`):
+
+```
+$ docker-machine start default
+$ eval $(docker-machine env)
+```
+
+<!-- tbd. how is it?
+Launch Docker (for Docker native):
+
+```
+$ docker info     # tbd. is this correct?
+```
+-->
 
 ```
 $ sbt test
+```
+
+## Troubleshooting
+
+If you see the error:
+
+```
+[info] test.EtcdV3Test *** ABORTED ***
+java.lang.RuntimeException: Cannot run all required containers
+```
+
+..the reason is likely that your `docker-machine` is out-of-date. Run this:
+
+```
+$ docker-machine upgrade default
+$ eval $(docker-machine env)
+```
+
+Try `sbt test` again.
+
+If you still get the same error, try to launch etcd manually (see [docs](docs/) for instructions).
+
+```
+$ docker run quay.io/coreos/etcd:v3.1.0
 ```
