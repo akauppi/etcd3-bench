@@ -1,28 +1,21 @@
 package test
 
-import com.whisk.docker.DockerFactory
 import com.whisk.docker.impl.dockerjava.DockerKitDockerJava
 import com.whisk.docker.scalatest.DockerTestKit
 import org.scalatest.concurrent.ScalaFutures
-import org.scalatest.time.{Milliseconds, Span}
 import org.scalatest.{FlatSpec, Matchers}
 import test.tools.DockerEtcdV3
 
-import scala.concurrent.duration._
 import scala.languageFeature.postfixOps
 
-class SomeTest extends FlatSpec with Matchers with ScalaFutures with DockerEtcdV3 with DockerTestKit with DockerKitDockerJava {
-  //import SomeTest._
+class EtcdV3Test extends FlatSpec with Matchers with ScalaFutures with DockerEtcdV3 with DockerTestKit with DockerKitDockerJava {
+  //import EtcdV3Test._
 
-  behavior of "SomeTest"
-
-  it should "pass" in {
-    succeed
-  }
+  behavior of "EtcdV3Test"
 
   //implicit val pc = PatienceConfig(20 seconds, 1 second)
 
-  "all containers" should "be ready at the same time" in {
+  it should "be able to launch etcd-v3 within Docker" in {
     dockerContainers.map(_.image).foreach(println)
     dockerContainers.forall(_.isReady().futureValue) shouldBe true
 
@@ -30,10 +23,12 @@ class SomeTest extends FlatSpec with Matchers with ScalaFutures with DockerEtcdV
       info( s"etcdV3 using ports: $ports" )
     }
   }
+
+  // tbd. tests using all/most aspects of 'jetcd'
 }
 
 /*** disabled
-object SomeTest {
+object EtcdV3Test {
   implicit def dur2span(dur: FiniteDuration): Span = {
     Span(dur.toMillis, Milliseconds)
   }
