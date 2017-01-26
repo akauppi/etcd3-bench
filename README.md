@@ -24,7 +24,7 @@ $ cd jetcd
 $ mvn install -DskipTests
 ```
 
-That installs `coreos/jetcd` in a local Maven.
+That installs `coreos/jetcd` in the local Maven.
 
 ---
 
