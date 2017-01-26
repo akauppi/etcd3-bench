@@ -31,7 +31,7 @@ $ docker run -p 2379:2379 --name etcd quay.io/coreos/etcd:v3.1.0 /usr/local/bin/
 2017-01-19 21:46:10.181441 N | etcdmain: serving insecure client requests on localhost:2379, this is strongly discouraged!
 ```
 
-- The `-listen-client-urls` parameter is needed for the host to reach the docker port. Details [here](http://stackoverflow.com/questions/35577856/running-etcd-in-docker-container).
+- The `--listen-client-urls` parameter is needed for the host to reach the docker port. Details [here](http://stackoverflow.com/questions/35577856/running-etcd-in-docker-container).
 
 The `-p` parameter is important: it exposes the Docker etcd client port to the host (the other port, 2380, is for server-to-server comms and we don't need it).
 

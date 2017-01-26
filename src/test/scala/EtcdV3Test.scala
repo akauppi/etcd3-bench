@@ -4,7 +4,7 @@ import com.coreos.jetcd.api.{DeleteRangeRequest, DeleteRangeResponse, PutRespons
 import com.whisk.docker.impl.dockerjava.DockerKitDockerJava
 import com.whisk.docker.scalatest.DockerTestKit
 import org.scalatest.concurrent.ScalaFutures
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest.{BeforeAndAfterAll, FlatSpec, Matchers}
 import test.tools.DockerEtcdV3
 import com.coreos.jetcd.{EtcdClient, EtcdClientBuilder, EtcdKV}
 import com.google.common.util.concurrent.{Futures, ListenableFuture}
@@ -15,41 +15,33 @@ import scala.concurrent.{Future, Promise}
 import scala.concurrent.duration._
 import scala.languageFeature.postfixOps
 
-class EtcdV3Test extends FlatSpec with Matchers with ScalaFutures with DockerEtcdV3 with DockerTestKit with DockerKitDockerJava {
+class EtcdV3Test extends FlatSpec with Matchers with ScalaFutures
+  with DockerEtcdV3 with DockerTestKit with DockerKitDockerJava {
   import EtcdV3Test._
 
-  behavior of "EtcdV3Test"
-
-  implicit val pc = PatienceConfig(20 seconds, 500 milli)
-
-  lazy val port: Int = etcdV3Container.getPorts.map { ports =>
-    info( s"etcdV3 using ports: $ports" )
-
-    assert(ports.size == 1)
-    ports(2379)    // random host side port (e.g. 32774)
-  }.futureValue
-
-  /*** REMOVE once other tests pass
-  it should "be able to launch etcd-v3 within Docker" in {
-    //dockerContainers.map(_.image).foreach(println)
-    //dockerContainers.forall(_.isReady().futureValue) shouldBe true
-
-    whenReady(etcdV3Container.getPorts()) { ports =>
+  lazy val kvClient: EtcdKV = {
+    val port: Int = etcdV3Container.getPorts.map { ports =>
       info( s"etcdV3 using ports: $ports" )
-    }
-  }
-  ***/
 
-  it should "be able to write/read key-values" in {
-    val (testKey,testValue) = ("testKey", "testValue")
+      assert(ports.size == 1)
+      ports(2379)    // random host side port (e.g. 32774)
+    }.futureValue
 
     val ip = dockerIP
-    info( s"Reaching for etcd at http://$ip:$port" )
+    //info( s"Reaching for etcd at http://$ip:$port" )
 
     val client: EtcdClient = EtcdClientBuilder.newBuilder()
       .endpoints(s"http://$ip:$port")
       .build()
-    val kvClient: EtcdKV = client.getKVClient
+    client.getKVClient
+  }
+
+  behavior of "Etcd v3 API via 'jetcd'"
+
+  implicit val pc = PatienceConfig(20 seconds, 500 milli)
+
+  it should "be able to write, read and delete a key/value pair" in {
+    val (testKey,testValue) = ("tk", "tv")
 
     val bsk: ByteString = ByteString.copyFrom(testKey, "UTF-8")
     val bsv: ByteString = ByteString.copyFrom(testValue, "UTF-8")
@@ -57,7 +49,7 @@ class EtcdV3Test extends FlatSpec with Matchers with ScalaFutures with DockerEtc
     // put the key-value
     val putFut: Future[PutResponse] = kvClient.put(bsk, bsv).asScala
 
-    whenReady(putFut) { _ =>
+    whenReady(putFut) { resp =>
       // get the value
       val fut2: Future[RangeResponse]= kvClient.get(bsk).asScala
       whenReady(fut2) { (rr: RangeResponse) =>
@@ -66,7 +58,13 @@ class EtcdV3Test extends FlatSpec with Matchers with ScalaFutures with DockerEtc
 
         // delete the key
         val delFut: Future[DeleteRangeResponse] = kvClient.delete(bsk).asScala
-        whenReady(delFut) { _ => }
+        whenReady(delFut) { _ =>
+
+          val fut3: Future[RangeResponse]= kvClient.get(bsk).asScala
+          whenReady(fut3) { (rr: RangeResponse) =>
+            rr.getKvsCount shouldBe 0   // not found any more
+          }
+        }
       }
     }
   }
@@ -75,8 +73,6 @@ class EtcdV3Test extends FlatSpec with Matchers with ScalaFutures with DockerEtc
 }
 
 object EtcdV3Test {
-  //import scala.language.implicitConversions
-
   /*
   * Provide the IP to reach the docker
   *
@@ -104,10 +100,4 @@ object EtcdV3Test {
       p.future
     }
   }
-
-  /*** disabled
-  implicit def dur2span(dur: FiniteDuration): Span = {
-    Span(dur.toMillis, Milliseconds)
-  }
-  ***/
 }
