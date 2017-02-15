@@ -49,6 +49,11 @@ $ docker info     # tbd. is this correct?
 $ sbt test
 ```
 
+The tests should pass.
+
+This launches a local etcd3 instance, for the duration of the tests, and runs the stated tests against it.
+
+
 ## Troubleshooting
 
 If you see the error:
