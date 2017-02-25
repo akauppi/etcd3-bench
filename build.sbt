@@ -19,17 +19,10 @@ scalacOptions ++= Seq(
 
 //--- Dependencies ---
 
-val akkaVersion = "2.4.16"
-val akkaActor = "com.typesafe.akka" %% "akka-actor" % akkaVersion
-
-val akkaHttpVersion = "10.0.1"
-val akkaHttp = "com.typesafe.akka" %% "akka-http" % akkaHttpVersion
-val akkaHttpTestkit = "com.typesafe.akka" %% "akka-http-testkit" % akkaHttpVersion % Test
-
 val scalaTest = "org.scalatest" %% "scalatest" % "3.0.1" % Test
 
 val dockerItScala = {
-  val ver = "0.9.0-RC3"   // 0.9.x needed for Scala 2.12
+  val ver = "0.9.0"   // 0.9.x needed for Scala 2.12
   Seq(
     "com.whisk" %% "docker-testkit-scalatest" % ver % Test,
     "com.whisk" %% "docker-testkit-impl-docker-java" % ver % Test
@@ -45,9 +38,7 @@ val jetcd = "com.coreos" % "jetcd" % "0.1.0-SNAPSHOT"
 resolvers += Resolver.mavenLocal
 
 libraryDependencies ++= Seq(
-  //akkaHttp,
   jetcd,
   //
-  //akkaHttpTestkit,
   scalaTest
 ) ++ dockerItScala
