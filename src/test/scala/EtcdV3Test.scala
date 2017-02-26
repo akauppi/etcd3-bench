@@ -56,6 +56,9 @@ class EtcdV3Test extends FlatSpec with Matchers with ScalaFutures
         rr.getKvsCount shouldBe 1
         rr.getKvs(0).getValue.toStringUtf8 shouldBe testValue
 
+        val rev: Long = rr.getHeader.getRevision
+        info( s"Revision: $rev")  // 2
+
         // delete the key
         val delFut: Future[DeleteRangeResponse] = kvClient.delete(bsk).asScala
         whenReady(delFut) { _ =>

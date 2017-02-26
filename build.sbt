@@ -22,7 +22,7 @@ scalacOptions ++= Seq(
 val scalaTest = "org.scalatest" %% "scalatest" % "3.0.1" % Test
 
 val dockerItScala = {
-  val ver = "0.9.0"   // 0.9.x needed for Scala 2.12
+  val ver = "0.9.1"
   Seq(
     "com.whisk" %% "docker-testkit-scalatest" % ver % Test,
     "com.whisk" %% "docker-testkit-impl-docker-java" % ver % Test
