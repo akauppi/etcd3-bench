@@ -35,7 +35,7 @@ trait DockerEtcdV3 extends DockerKit {
 
 object DockerEtcdV3 {
   private
-  val (version, prefix) = ("3.1.0", "embed")    // or ("3.0.16", "etcdmain")
+  val (version, prefix) = ("3.1.2", "embed")    // or ("3.0.16", "etcdmain")
 
   // Note: port 2379 is client communication, 2380 server-to-server (we probably won't need that)
   private
